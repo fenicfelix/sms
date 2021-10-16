@@ -2,13 +2,24 @@
 class TaifaMobile
 {
 	public function __construct()
-	{ }
+	{
+	}
+
 	public function send_sms($recepients, $message, $apiKey, $service_name = NULL)
 	{
 		$plaintext = json_encode(array("message" => $message, "recepients" => $recepients));
 		$encrypted_message = $this->encrypt($plaintext, $apiKey);
 		$data = ["message" => $encrypted_message, "key" => $apiKey, "service_name" => $service_name];
 		$response = $this->curl_function($data, "sms");
+		return $response;
+	}
+
+	public function reply_sms($linkId, $message, $apiKey)
+	{
+		$plaintext = json_encode(array("message" => $message, "link_id" => $linkId));
+		$encrypted_message = $this->encrypt($plaintext, $apiKey);
+		$data = ["message" => $encrypted_message, "key" => $apiKey];
+		$response = $this->curl_function($data, "reply_sms");
 		return $response;
 	}
 
